@@ -8,5 +8,8 @@
   },
   "devDependencies": {
     "eslint-config-custom": "*"
+  },
+  "dependencies": {
+    "date-fns": "^2.29.3"
   }
 }
