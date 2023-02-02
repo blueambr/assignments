@@ -1,3 +1,4 @@
+const isBefore = require("date-fns/isBefore");
 const isSameHour = require("date-fns/isSameHour");
 const parse = require("date-fns/parse");
 const data = require("./data/index.json");
@@ -13,6 +14,14 @@ const getGreatestAmountInSameHour = (clickOne, clickTwo) => {
   const clickDateTwo = parse(timestampTwo, "d/M/y kk:mm:ss", new Date());
 
   if (isSameHour(clickDateOne, clickDateTwo)) {
+    if (amountOne === amountTwo) {
+      if (isBefore(clickDateOne, clickDateTwo)) {
+        return clickOne;
+      }
+
+      return clickTwo;
+    }
+
     if (amountOne > amountTwo) {
       return clickOne;
     }
@@ -44,26 +53,22 @@ Object.keys(ips).forEach((key) => {
       if (length > 1) {
         const lengthArray = [...Array(length).keys()];
         const lastIndex = length - 1;
-        let theGreatest = null;
+        let theGreatest = click;
+        let theGreatestIndex = index;
 
         lengthArray.forEach((i) => {
-          if (index !== i) {
+          if (theGreatestIndex !== i) {
             const theGreatestFromTwo = getGreatestAmountInSameHour(
-              click,
+              theGreatest,
               clicks[i]
             );
 
-            if (theGreatestFromTwo) {
+            if (theGreatestFromTwo && theGreatestFromTwo !== theGreatest) {
               theGreatest = theGreatestFromTwo;
-            } else if (lastIndex === i) {
-              if (theGreatest) {
-                if (
-                  !result.find((resultClick) => resultClick === theGreatest)
-                ) {
-                  result.push(theGreatest);
-                }
-              } else if (!result.find((resultClick) => resultClick === click)) {
-                result.push(click);
+              theGreatestIndex = i;
+            } else if (lastIndex === i || lastIndex === index) {
+              if (!result.find((resultClick) => resultClick === theGreatest)) {
+                result.push(theGreatest);
               }
             }
           }
