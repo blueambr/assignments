@@ -1,4 +1,5 @@
 const isBefore = require("date-fns/isBefore");
+const isDate = require("date-fns/isDate");
 const isSameHour = require("date-fns/isSameHour");
 const parse = require("date-fns/parse");
 const fs = require("fs");
@@ -17,11 +18,33 @@ const getPriorityClick = (clickOne, clickTwo) => {
   const { timestamp: timestampOne, amount: amountOne } = clickOne;
   const { timestamp: timestampTwo, amount: amountTwo } = clickTwo;
 
+  // Check if amounts are numbers (and not NaN or Infinite)
+  if (!Number.isFinite(amountOne) || !Number.isFinite(amountTwo)) {
+    console.error(
+      "⛔️ One or two of the provided clicks could not be compared by amount\n",
+      clickOne,
+      "\n",
+      clickTwo
+    );
+    throw new Error("🛑 See the error above");
+  }
+
   const clickDateOne = parse(timestampOne, timestampFormat, new Date());
   const clickDateTwo = parse(timestampTwo, timestampFormat, new Date());
 
-  // Check if both clicks are in the same hour
+  // Check if we got Dates from timestamps
+  if (!isDate(clickDateOne) || !isDate(clickDateTwo)) {
+    console.error(
+      "⛔️ One or two of the provided clicks could not be transformed to Date\n",
+      clickOne,
+      "\n",
+      clickTwo
+    );
+    throw new Error("🛑 See the error above");
+  }
+
   if (isSameHour(clickDateOne, clickDateTwo)) {
+    // Check if both clicks are in the same hour
     // Return the earliest click, if amounts are equal
     if (amountOne === amountTwo) {
       if (isBefore(clickDateOne, clickDateTwo)) {
@@ -43,9 +66,23 @@ const getPriorityClick = (clickOne, clickTwo) => {
   return null;
 };
 
+// Check if our data is array and is not empty
+if (!Array.isArray(data) || !data.length) {
+  throw new Error("⛔️ The initial data array is either empty or not an array");
+}
+
 // Fill clicksGroupedByIP object for better data filtering/manipulation
 data.forEach((click) => {
   const { ip } = click;
+
+  // Validate IP (I check only for truthy value)
+  if (!ip) {
+    console.error(
+      "⛔️ At least one of the clicks does not provide a valid IP\n",
+      click
+    );
+    throw new Error("🛑 See the error above");
+  }
 
   if (!clicksGroupedByIP[ip]) {
     clicksGroupedByIP[ip] = [];
