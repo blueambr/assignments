@@ -1,6 +1,7 @@
 const isBefore = require("date-fns/isBefore");
 const isSameHour = require("date-fns/isSameHour");
 const parse = require("date-fns/parse");
+const fs = require("fs");
 const data = require("./data/index.json");
 
 const clicksGroupedByIP = {};
@@ -113,4 +114,11 @@ Object.keys(clicksGroupedByIP).forEach((key) => {
   }
 });
 
-console.log(result);
+// Output result to console
+console.info("Result:\n", result);
+
+// Output result to resultset.json file in the same folder with 2 spaces indentation
+fs.writeFileSync("./resultset.json", JSON.stringify(result, null, 2));
+
+// Flavoring
+console.info("\nClicks solution:\n🏁 Finished\n✅ Success");
