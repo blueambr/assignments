@@ -2,7 +2,7 @@
   "name": "clicks",
   "scripts": {
     "solution": "node index.js",
-    "test": "vitest run",
+    "test": "vitest run --coverage",
     "lint": "eslint"
   },
   "devDependencies": {
