@@ -43,8 +43,8 @@ const getPriorityClick = (clickOne, clickTwo) => {
     throw new Error("🛑 See the error above");
   }
 
+  // Check if both clicks are in the same hour
   if (isSameHour(clickDateOne, clickDateTwo)) {
-    // Check if both clicks are in the same hour
     // Return the earliest click, if amounts are equal
     if (amountOne === amountTwo) {
       if (isBefore(clickDateOne, clickDateTwo)) {
