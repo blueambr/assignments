@@ -1,7 +1,5 @@
 {
   "name": "assignments",
-  "version": "0.0.0",
-  "private": true,
   "workspaces": [
     "solutions/*",
     "packages/*"
@@ -18,10 +16,7 @@
     "eslint-config-custom": "*",
     "husky": "^8.0.0",
     "prettier": "latest",
-    "turbo": "latest"
-  },
-  "engines": {
-    "node": ">=14.0.0"
-  },
-  "packageManager": "npm@8.19.3"
+    "turbo": "latest",
+    "vitest": "^0.28.4"
+  }
 }

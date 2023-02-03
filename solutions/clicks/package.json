@@ -1,10 +1,9 @@
 {
   "name": "clicks",
-  "version": "0.0.0",
-  "private": true,
   "scripts": {
     "solution": "node index.js",
-    "lint": "npx eslint --fix index.js"
+    "test": "vitest run",
+    "lint": "eslint"
   },
   "devDependencies": {
     "eslint-config-custom": "*"
