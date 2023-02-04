@@ -1,9 +1,9 @@
 const getPriorityClick = require("../getPriorityClick");
 
-const clicksGroupedByIP = {};
-const result = [];
-
 const getFilteredClicks = (data) => {
+  const clicksGroupedByIP = {};
+  const result = [];
+
   // Check if our data is array and is not empty
   if (!Array.isArray(data) || !data.length) {
     throw new Error(
@@ -24,10 +24,12 @@ const getFilteredClicks = (data) => {
       throw new Error("🛑 See the error above");
     }
 
+    // Create a new object key for every unique IP
     if (!clicksGroupedByIP[ip]) {
       clicksGroupedByIP[ip] = [];
     }
 
+    // Push clicks to array related to their IP
     clicksGroupedByIP[ip].push(click);
   });
 
@@ -75,7 +77,7 @@ const getFilteredClicks = (data) => {
               } else if (lastIndex === reiteratedIndex || lastIndex === index) {
                 /**
                  * If it is the last click in either of iterations (original or reiteration)
-                 * and if we don't already have this click in result
+                 * and if we don't already have this click in result —
                  * push it to result
                  */
                 if (

@@ -5,7 +5,7 @@ const parse = require("date-fns/parse");
 
 /**
  * I assumed this is the format used in the original data (day first, month second)
- * If we need to change it, it'd be as simple as updating this variable
+ * If we need to change it, it'd be as simple as updating this variable (and tests)
  */
 const timestampFormat = "d/M/y kk:mm:ss";
 
