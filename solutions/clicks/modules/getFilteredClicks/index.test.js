@@ -3,11 +3,11 @@ import { describe, expect, it } from "vitest";
 const getFilteredClicks = require("./index");
 
 describe("getFilteredClicks", () => {
-  it("Data error, should be array and not empty", () => {
+  it("Throws error, if data is not array or is empty", () => {
     expect(() => getFilteredClicks([])).toThrowError("empty");
   });
 
-  it("IP error, should be truthy", () => {
+  it("Throws error, if ip is not truthy", () => {
     expect(() =>
       getFilteredClicks([
         { ip: null, timestamp: "3/11/2020 02:02:58", amount: 7.0 },
@@ -21,7 +21,13 @@ describe("getFilteredClicks", () => {
     ).toThrowError("error");
   });
 
-  it("Right result, example 1", () => {
+  /**
+   * Filtering requirements:
+   * - Eliminate clicks with the same ip, if there are more than 10 such clicks
+   * - In 1 hour period with the same ip return one with the highest amount
+   * - In 1 hour period with the same ip, if amounts are equal, return the earliest one
+   */
+  it("Filters clicks correctly, data example 1", () => {
     expect(
       getFilteredClicks([
         { ip: "22.22.22.22", timestamp: "3/11/2020 02:02:58", amount: 7.0 },
@@ -46,7 +52,7 @@ describe("getFilteredClicks", () => {
     ]);
   });
 
-  it("Right result, example 2", () => {
+  it("Filters clicks correctly, data example 2", () => {
     expect(
       getFilteredClicks([
         { ip: "55.55.55.55", timestamp: "3/11/2020 13:33:34", amount: 8.0 },
@@ -73,7 +79,7 @@ describe("getFilteredClicks", () => {
     ]);
   });
 
-  it("Right result, example 3", () => {
+  it("Filters clicks correctly, data example 3", () => {
     expect(
       getFilteredClicks([
         { ip: "22.22.22.22", timestamp: "3/11/2020 02:02:58", amount: 7.0 },
